@@ -1,5 +1,7 @@
 # Trigrams Kata - in Chicken Scheme
 
+http://codekata.pragprog.com/2007/01/kata_fourteen_t.html
+
 Because LOLZORZ!!!
 
 1. This is the first non trivial thing I have attempted in Scheme
