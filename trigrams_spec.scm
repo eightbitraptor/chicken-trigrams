@@ -28,6 +28,15 @@
     (expect (triplet-split test-input)
             (be test-table-output))))
 
+(describe "getting values from an alist"
+  (let ((dummy-list '(((a b) c) ((c d) e) ((a d) r))))
+    (it "finds a value"
+      (expect (alist-value-by-ref-or-default '(a b) dummy-list)
+              (be '(c))))
+    (it "returns a default"
+      (expect (alist-value-by-ref-or-default '(cats) dummy-list)
+              (be '())))))
+
 (describe "grouping the test table into a table of trigrams"
   (it "makes an association list"
     (expect (convert-word-groups-to-trigram '() test-table-output)
@@ -38,4 +47,3 @@
               (convert-word-groups-to-trigram '() test-table-output))
             (be '((on the) mat cat)))))
 
-(print (convert-word-groups-to-trigram '() test-table-output))

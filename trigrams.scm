@@ -23,8 +23,8 @@
   (map token-group triplets))
 
 (define (alist-value-by-ref-or-default key alist)
-  (let ((value (assoc key alist list=)))
-    (if value
+  (let ((value (assoc key alist equal?)))
+    (if (pair? value)
       (cdr value)
       '())))
 
