@@ -29,7 +29,13 @@
             (be test-table-output))))
 
 (describe "getting values from an alist"
-  (let ((dummy-list '(((a b) c) ((c d) e) ((a d) r))))
+  (let ((dummy-list '(((a b) c) ((b c) e) ((a d) r g))))
+    (it "can find a value from a string"
+      (expect (random-value-from dummy-list "a b c")
+              (be "e")))
+    (it "picks a random value when there are multiple choices"
+      (expect (random-value-from dummy-list "a d")
+              (be member '("r" "g"))))
     (it "finds a value"
       (expect (alist-value-by-ref-or-default '(a b) dummy-list)
               (be '(c))))
@@ -37,7 +43,7 @@
       (expect (alist-value-by-ref-or-default '(cats) dummy-list)
               (be '())))))
 
-(describe "grouping the test table into a table of trigrams"
+(describe "grouping the test input into a table of trigrams"
   (it "makes an association list"
     (expect (convert-word-groups-to-trigram '() test-table-output)
             (be a list)))
@@ -47,3 +53,8 @@
               (convert-word-groups-to-trigram '() test-table-output))
             (be '((on the) mat cat)))))
 
+(describe "Generating a story" 
+  (it "builds a plausible outcome"
+    (expect (story "The cat" test-input 6)
+            (be member '("The cat sat on the mat"
+                         "The cat sat on the cat")))))

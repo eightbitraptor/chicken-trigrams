@@ -1,6 +1,7 @@
 (require 'srfi-69)
 (require 'srfi-13)
 (require 'srfi-1)
+(require 'utils)
 
 (define (tokenize input)
   (map string->symbol
@@ -42,4 +43,27 @@
           alist)
         (cdr word-groups)))))
        
+
+(define (random-value-from alist str)
+  (let* ((last-pair (take-right (tokenize str) 2))
+         (value (drop (assoc last-pair alist equal?) 1)))
+    (symbol->string (list-ref value (random (length value))))))
+
+
+;;
+;; Main entry point
+;;
+;; str         - the result string (and a two word bootstrap)
+;; trigram-str - the source to generate a trigram list from
+;; len         - the length (in words) of the output
+;;
+(define (story str trigram-str len)
+  (let ((trigrams (convert-word-groups-to-trigram 
+                    '() 
+                     (triplet-split trigram-str))))
+    (if (equal? 2 len)
+      str
+      (story (string-append str " " (random-value-from trigrams str))
+             trigram-str
+             (- len 1)))))
 
